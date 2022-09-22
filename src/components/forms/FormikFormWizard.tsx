@@ -1,32 +1,8 @@
 import React from 'react';
 
-import { Formik, FormikConfig, FormikHelpers, FormikValues } from 'formik';
+import { Formik, FormikHelpers, FormikValues } from 'formik';
 import * as Yup from 'yup';
-
-export interface FormFieldsProps {
-   [name: string]: {
-      label: string;
-      tagName: string;
-      defaultValue?: any;
-      options?: any[];
-      type?: string;
-      required?: boolean;
-      className?: { [key: string]: string };
-      disabled?: boolean;
-   };
-}
-
-export interface FormContextProps {
-   fields: FormFieldsProps;
-}
-
-export interface FormProps {
-   formConfig: {
-      fields: FormFieldsProps;
-      formik: FormikConfig<FormikValues>;
-   };
-   children?: React.ReactNode;
-}
+import { FormContextProps, FormProps } from 'miniatureact/forms';
 
 export const FormFieldsContext = React.createContext<FormContextProps>({
    fields: {}
@@ -35,32 +11,36 @@ export const FormFieldsContext = React.createContext<FormContextProps>({
 export default function FormikForm(props: FormProps) {
    const {
       formConfig: { fields, formik },
-      children
+      children,
+      ...others
    } = props;
 
-   const onSubmitCallback = (values: FormikValues, helper: FormikHelpers<FormikValues>) => {
-      setTimeout(() => {
-         formik.onSubmit(values, helper);
-         console.log('values', JSON.stringify(values, null, 2));
-         //  setSubmitting(false);
-      }, 400);
-   };
-   console.log('veriler', fields, formik);
+   const values = React.useMemo(() => {
+      if (formik.initialValues) return formik.initialValues;
 
-   const values = Object.entries(fields).reduce((acc: any, [key, value]) => {
-      acc[key] = formik.initialValues?.[key] || value.defaultValue;
-      return acc;
-   }, {});
+      return Object.entries(fields).reduce((acc: any, [key, value]) => {
+         value.defaultValue && (acc[key] = value.defaultValue);
+         return acc;
+      }, {});
+   }, [fields, formik.initialValues]);
 
-   const providerValue = React.useMemo(() => ({ value: { fields } }), [fields]);
+   const providerValue = { value: { fields } };
 
    return (
       <Formik
-         onSubmit={onSubmitCallback}
-         validationSchema={Yup.object().shape(formik.validationSchema || {})}
+         onSubmit={formik.onSubmit}
+         //validationSchema={Yup.object().shape(formik.validationSchema || {})}
          initialValues={values}
+         enableReinitialize={true}
+         {...others}
       >
-         <FormFieldsContext.Provider {...providerValue}>{children}</FormFieldsContext.Provider>
+         {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+            <form onSubmit={handleSubmit} noValidate>
+               <FormFieldsContext.Provider {...providerValue}>
+                  {children}
+               </FormFieldsContext.Provider>
+            </form>
+         )}
       </Formik>
    );
 }

@@ -1,30 +1,38 @@
 {
   "name": "miniatureact",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "homepage": ".",
   "private": false,
   "description": "React Formik Form Wizard Framework",
   "author": "uuur86",
-  "license": "MIT",
   "repository": "uuur86/miniatureact",
+  "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.59",
-    "@types/react": "^18.0.20",
-    "@types/react-dom": "^18.0.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.8.3",
-    "web-vitals": "^2.1.4"
-  },
-  "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "primereact": "^7.1.0",
+    "axios": "^0.21.1",
+    "chart.js": "3.3.2",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.29.1",
+    "file-saver": "^2.0.5",
     "formik": "^2.2.9",
+    "history": "^4.10.1",
+    "ol": "^6.14.1",
+    "primeflex": "3.1.0",
+    "primeicons": "^5.0.0",
+    "primereact": "^7.1.0",
+    "prismjs": "^1.9.0",
+    "query-string": "^7.1.1",
+    "react": "^18.2.0",
+    "react-app-polyfill": "^1.0.6",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.3.1",
+    "react-router-dom": "^5.3.3",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.4.0",
+    "react-tabs": "^3.2.3",
+    "react-transition-group": "^4.4.1",
+    "rxjs": "^7.5.4",
+    "sass": "^1.32.8",
+    "typescript": "4.7.4",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -35,8 +43,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -50,5 +57,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.17",
+    "@types/react-router-dom": "^5.3.3",
+    "prettier": "^2.5.1",
+    "swagger-typescript-api": "^10.0.1"
   }
 }

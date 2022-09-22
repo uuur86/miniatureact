@@ -1,8 +1,8 @@
 import React from 'react';
 import { ErrorMessage, useFormikContext, FormikValues } from 'formik';
 import { UniqueComponentId } from 'primereact/utils';
-import * as FormFields from 'components/forms/fields';
 import { FormFieldsContext } from './FormikFormWizard';
+import { BaseFieldAdapter } from './BaseFields';
 
 /**
  * Gets the formik
@@ -11,27 +11,32 @@ export function FormField(props: { name: string; disabled?: boolean }): JSX.Elem
    const { name, disabled = false } = props;
    const formik = useFormikContext<FormikValues>();
    const formConfig = React.useContext(FormFieldsContext);
-   const {
-      [name]: { label, tagName, defaultValue, options }
-   } = formConfig.fields;
-   console.log('veriler', name, formConfig, { label, tagName, defaultValue, options }, formik);
-   const { values: { [name]: value } = {} } = formik;
+   const fields = formConfig.fields[name] || {};
 
-   if (tagName === undefined) return <></>;
+   if (Object.entries(fields).length === 0) {
+      console.warn(`Field ${name} is not defined in the form`);
+   }
+
+   const { label = '', type = 'text', defaultValue = '', options = [] } = fields;
+
+   const { values: { [name]: value } = {} } = formik;
 
    const id = UniqueComponentId(`form-field-${name}`);
    const fieldProps = {
-      formik,
-      props: { label, name, value: value || defaultValue, disabled: disabled, options },
-      id
+      ...fields,
+      id,
+      label,
+      name,
+      value: value || defaultValue,
+      disabled: disabled,
+      onChange: formik.handleChange,
+      options
    };
-
-   const FieldTag = (props: typeof fieldProps) => FormFields.fields[tagName](props);
 
    return (
       <>
          <span className="p-float-label">
-            <FieldTag {...fieldProps} />
+            <BaseFieldAdapter type={type} attr={fieldProps} />
             <label htmlFor={id}>{label}</label>
          </span>
          <ErrorMessage name={name} />

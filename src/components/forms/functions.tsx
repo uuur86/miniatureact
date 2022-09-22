@@ -5,24 +5,8 @@
  * @version 1.0.3
  */
 
+import { YupFieldProps } from 'miniatureact/forms';
 import * as yup from 'yup';
-
-export declare type YupFieldProps = {
-   name: string;
-   type: string;
-   errors: { [key: string]: string };
-   required: boolean;
-   min: number;
-   max: number;
-   when: {
-      field: string;
-      options: {
-         is: any;
-         then: YupFieldProps;
-         otherwise: YupFieldProps;
-      };
-   };
-};
 
 export const yupFieldType = {
    date: yup.date(),

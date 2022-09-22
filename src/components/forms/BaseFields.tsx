@@ -1,23 +1,9 @@
-import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
+import React from "react";
+import { FormFieldAttr } from "miniatureact/forms";
+import { FORM_COMPONENTS } from "./defaultConfig";
 
-export function BaseDropdown(props: any): JSX.Element {
-   return <Dropdown {...props}></Dropdown>;
-}
+export function BaseFieldAdapter({ type = 'text', attr }: { type: string; attr: FormFieldAttr }) {
+   const { el: Component, props: adapter } = FORM_COMPONENTS[type];
 
-export function BaseInputText(props: any) {
-   const { id, label, name, value, onChange } = props;
-
-//    const onChange = (e: any) => {
-//       setFieldValue(name, e.target.value);
-//    };
-
-   return (
-      <>
-         <span className="p-float-label">
-            <InputText id={id} value={value} name={name} onChange={onChange} />
-            <label htmlFor={id}>{label}</label>
-         </span>
-      </>
-   );
+   return <Component {...adapter(attr)} />;
 }
